@@ -3764,10 +3764,6 @@ static void mp_event_psi(int data, uint32_t events, struct polling_params *poll_
             /* File cache is big enough, stop checking */
             check_filecache = false;
         }
-    } else if (reclaim == DIRECT_RECLAIM && wmark <= WMARK_HIGH) {
-        kill_reason = DIRECT_RECL_AND_LOW_MEM;
-        strlcpy(kill_desc, "device is in direct reclaim and low on memory", sizeof(kill_desc));
-        min_score_adj = PERCEPTIBLE_APP_ADJ;
     } else if (in_compaction && wmark <= WMARK_HIGH) {
         kill_reason = COMPACTION;
         strlcpy(kill_desc, "device is in compaction and low on memory", sizeof(kill_desc));
