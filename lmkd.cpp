@@ -182,7 +182,7 @@ static inline void trace_kill_end() {}
 
 #define NATIVE_PID_FD (-128)
 
-#define ENABLE_TRACING
+//#define ENABLE_TRACING
 
 /* default to old in-kernel interface if no memory pressure events */
 static bool use_inkernel_interface = true;
