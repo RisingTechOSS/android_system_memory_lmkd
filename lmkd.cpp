@@ -3458,9 +3458,6 @@ static void mp_event_psi(int data, uint32_t events, struct polling_params *poll_
     int64_t pgskip_deltas[VS_PGSKIP_LAST_ZONE - VS_PGSKIP_FIRST_ZONE + 1] = {0};
     struct zoneinfo zi;
 
-    ULMK_LOG(D, "%s pressure event %s", level_name[level], events ?
-             "triggered" : "polling check");
-
     if (events &&
        (!poll_params->poll_handler || data >= poll_params->poll_handler->data)) {
            wbf_effective = wmark_boost_factor;
@@ -3629,8 +3626,6 @@ static void mp_event_psi(int data, uint32_t events, struct polling_params *poll_
     } else {
         /* Calculate what % of the file-backed pagecache refaulted so far */
         thrashing = (workingset_refault_file - init_ws_refault) * 100 / (base_file_lru + 1);
-        ULMK_LOG(D, "thrashing: %" PRId64 "%% thrashing_limit: %d%%", thrashing,
-                 thrashing_limit);
     }
     /* Add previous cycle's decayed thrashing amount */
     thrashing += prev_thrash_growth;
@@ -3818,9 +3813,6 @@ static void mp_event_psi(int data, uint32_t events, struct polling_params *poll_
             ULMK_LOG(D, "No processes to kill with adj score >= %d",
                      min_score_adj);
         }
-    } else {
-        ULMK_LOG(D, "Not killing for %s pressure event %s", level_name[level],
-                 events ? "trigger" : "polling check");
     }
 
 no_kill:
