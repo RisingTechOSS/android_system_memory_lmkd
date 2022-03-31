@@ -3676,7 +3676,7 @@ static void mp_event_psi(int data, uint32_t events, struct polling_params *poll_
     } else if (reclaim == DIRECT_RECLAIM_THROTTLE) {
         kill_reason = DIRECT_RECL_AND_THROT;
         strlcpy(kill_desc, "system processes are being throttled", sizeof(kill_desc));
-    } else if (level == VMPRESS_LEVEL_CRITICAL && wmark <= WMARK_HIGH) {
+    } else if (level == VMPRESS_LEVEL_CRITICAL && (events != 0 && wmark <= WMARK_HIGH)) {
         /*
          * Device is too busy reclaiming memory which might lead to ANR.
          * Critical level is triggered when PSI complete stall (all tasks are blocked because
@@ -3685,7 +3685,7 @@ static void mp_event_psi(int data, uint32_t events, struct polling_params *poll_
         kill_reason = CRITICAL_KILL;
         strlcpy(kill_desc, "critical pressure and device is low on memory", sizeof(kill_desc));
         min_score_adj = PERCEPTIBLE_RECENT_FOREGROUND_APP_ADJ;
-    } else if (level == VMPRESS_LEVEL_SUPER_CRITICAL && wmark <= WMARK_HIGH) {
+    } else if (level == VMPRESS_LEVEL_SUPER_CRITICAL && (events != 0 && wmark <= WMARK_HIGH)) {
         /*
          * Device is too busy reclaiming memory which might lead to ANR.
          * Critical level is triggered when PSI complete stall (all tasks are blocked because
