@@ -945,7 +945,7 @@ static void stats_write_lmk_state_changed(enum lmk_state state) {
     }
     for (int i = 0; i < MAX_DATA_CONN; i++) {
         if (data_sock[i].sock >= 0 && data_sock[i].async_event_mask & 1 << LMK_ASYNC_EVENT_STAT) {
-            ctrl_data_write(i, (char*)packet_state_changed, len, true);
+            ctrl_data_write(i, (char*)packet_state_changed, len);
         }
     }
 }
