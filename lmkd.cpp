@@ -2737,6 +2737,7 @@ static void mp_event_psi(int data, uint32_t events, struct polling_params *poll_
         max_thrashing = thrashing;
     }
 
+update_watermarks:
     /*
      * Refresh watermarks once per min in case user updated one of the margins.
      * TODO: b/140521024 replace this periodic update with an API for AMS to notify LMKD
@@ -2866,6 +2867,14 @@ static void mp_event_psi(int data, uint32_t events, struct polling_params *poll_
             .thrashing = (int)thrashing,
             .max_thrashing = max_thrashing,
         };
+        static bool first_kill = true;
+
+        /* Make sure watermarks are correct before the first kill */
+        if (first_kill) {
+            first_kill = false;
+            watermarks.high_wmark = 0;  // force recomputation
+            goto update_watermarks;
+        }
 
         /* Allow killing perceptible apps if the system is stalled */
         if (critical_stall) {
