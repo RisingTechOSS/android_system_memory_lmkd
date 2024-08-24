@@ -2855,7 +2855,7 @@ static void mp_event_psi(int data, uint32_t events, struct polling_params *poll_
         kill_reason = LOW_MEM;
         snprintf(kill_desc, sizeof(kill_desc), "%s watermark is breached",
             wmark < WMARK_LOW ? "min" : "low");
-        min_score_adj = PREVIOUS_APP_ADJ + 1;
+        min_score_adj = OOM_SCORE_ADJ_MAX + 1;
     }
 
     /* Kill a process if necessary */
